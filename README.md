@@ -1,6 +1,6 @@
 # killport
 
-Go CLI utility to kill running process by port number.
+Go CLI utility to kill running macOS process by port number.
 
 ## Install
 
