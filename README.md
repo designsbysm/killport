@@ -14,5 +14,5 @@ $ go install
 ## Useage
 
 ```
-$ killport --port ####
+$ killport ####
 ```

@@ -4,24 +4,32 @@ import (
 	"flag"
 	"fmt"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
 func main() {
 	var port int
-
-	flag.IntVar(&port, "port", 0, "port number")
+	var err error
 	flag.Parse()
 
+	if len(flag.Args()) == 1 {
+		port, err = strconv.Atoi(flag.Args()[0])
+		if err != nil {
+			fmt.Println("Error: invalid port number")
+			return
+		}
+	}
+
 	if port == 0 {
-		fmt.Println("port missing, please include: --port ####")
+		fmt.Println("Error: port missing number, useage: killport ####")
 		return
 	}
 
 	b, err := exec.Command("lsof", "-t", "-i", fmt.Sprintf(":%d", port)).Output()
 	if err != nil {
 		if err.Error() == "exit status 1" {
-			fmt.Println("running process not found")
+			fmt.Println("Warning: running process not found")
 			return
 		} else {
 			panic(err)
@@ -34,4 +42,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("Success: process %s killed\n", pid)
 }
