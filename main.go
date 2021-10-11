@@ -43,5 +43,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Success: process %s killed\n", pid)
+	fmt.Printf("Success: process %s is dead\n", pid)
 }
