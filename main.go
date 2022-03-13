@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"os/exec"
@@ -36,12 +37,19 @@ func main() {
 		}
 	}
 
-	pid := strings.TrimSpace(string(b))
+	pidsBytes := bytes.Split(b, []byte("\n"))
+	for _, pidBytes := range pidsBytes {
+		pid := strings.TrimSpace(string(pidBytes))
 
-	_, err = exec.Command("kill", "-kill", pid).Output()
-	if err != nil {
-		panic(err)
+		if pid == "" {
+			continue
+		}
+
+		_, err = exec.Command("kill", "-kill", pid).Output()
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("Success: process %s is dead\n", pid)
 	}
-
-	fmt.Printf("Success: process %s is dead\n", pid)
 }
